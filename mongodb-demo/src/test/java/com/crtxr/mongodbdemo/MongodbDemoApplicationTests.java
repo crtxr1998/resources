@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootTest
 class MongodbDemoApplicationTests {
@@ -109,8 +110,6 @@ class MongodbDemoApplicationTests {
         System.out.println(String.format("update-result结果======>>>>>>>>>>%s", result));
         Account updateAfter = mongoTemplate.findOne(query, Account.class);
         System.out.println(String.format("修改后的结果======>>>>>>>>>>%s", updateAfter));
-
-
     }
 
     /**
@@ -119,7 +118,7 @@ class MongodbDemoApplicationTests {
     @Test
     void deleteByWhere() {
         //找到并删除weight大于等于22并且loves为null的第一条
-        //(这里要注意虽然这里实际文档中不存在loves属性,但是{loves:null}的条件是成立的)
+        //(这里要注意如果实际文档中不存在loves属性,但是{loves:null}的条件是成立的,这里最好要注意，很容易误删数据)
         // 删除多条使用findAllAndRemove
         mongoTemplate.findAndRemove(new Query(Criteria.where("weight").gte(22).and("loves").is(null)), Account.class);
         //删除所有
